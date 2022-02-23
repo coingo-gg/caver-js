@@ -99,7 +99,7 @@
     "uuid": "8.3.2",
     "webpack": "^5.65.0",
     "websocket": "1.0.31",
-    "xhr2-cookies": "1.1.0"
+    "xhr2-cookies": "git+ssh://git@github.com:coingo-gg/xhr2-cookies.git"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
