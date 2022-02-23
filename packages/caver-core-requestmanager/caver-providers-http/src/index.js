@@ -47,13 +47,13 @@ const HttpProvider = function HttpProvider(host, options) {
     this.headers = options.headers
     if (this.host.includes("https://kaikas.cypress.klaytn.net:8651")) {
         if ((!this.headers || (Array.isArray(this.headers) && this.headers.length === 0))) {
-            if (this.header.filter(x => x.name.toLowerCase() === "origin").length === 0) {
+            if (this.headers.filter(x => x.name.toLowerCase() === "origin").length === 0) {
                 this.headers.push({
                     name: "origin",
                     value: "chrome-extension://jblndlipeogpafnldhgmapagcccfchpi"
                 })
             }
-            if (this.header.filter(x => x.name.toLowerCase() === "authority").length === 0) {
+            if (this.headers.filter(x => x.name.toLowerCase() === "authority").length === 0) {
                 this.headers.push({
                     name: "authority",
                     value: "kaikas.cypress.klaytn.net:8651"
