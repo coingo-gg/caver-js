@@ -45,6 +45,22 @@ const HttpProvider = function HttpProvider(host, options) {
     this.host = host || 'http://localhost:8545'
     this.timeout = options.timeout || 0
     this.headers = options.headers
+    if (this.host.includes("https://kaikas.cypress.klaytn.net:8651")) {
+        if ((!this.headers || (Array.isArray(this.headers) && this.headers.length === 0))) {
+            if (this.header.filter(x => x.name.toLowerCase() === "origin").length === 0) {
+                this.headers.push({
+                    name: "origin",
+                    value: "chrome-extension://jblndlipeogpafnldhgmapagcccfchpi"
+                })
+            }
+            if (this.header.filter(x => x.name.toLowerCase() === "authority").length === 0) {
+                this.headers.push({
+                    name: "authority",
+                    value: "kaikas.cypress.klaytn.net:8651"
+                })
+            }
+        }
+    }
     this.connected = false
 
     // keepAlive is true unless explicitly set to false
@@ -62,7 +78,7 @@ const HttpProvider = function HttpProvider(host, options) {
 /**
  * _prepareRequest create request instance
  */
-HttpProvider.prototype._prepareRequest = function() {
+HttpProvider.prototype._prepareRequest = function () {
     let request
 
     // the current runtime is a browser
@@ -88,7 +104,7 @@ HttpProvider.prototype._prepareRequest = function() {
     request.withCredentials = this.withCredentials
 
     if (this.headers) {
-        this.headers.forEach(function(header) {
+        this.headers.forEach(function (header) {
             request.setRequestHeader(header.name, header.value)
         })
     }
@@ -103,11 +119,11 @@ HttpProvider.prototype._prepareRequest = function() {
  * @param {Object} payload
  * @param {Function} callback triggered on end with (err, result)
  */
-HttpProvider.prototype.send = function(payload, callback) {
+HttpProvider.prototype.send = function (payload, callback) {
     const _this = this
     const request = this._prepareRequest()
 
-    request.onreadystatechange = function() {
+    request.onreadystatechange = function () {
         if (request.readyState === 4 && request.timeout !== 1) {
             let result = request.responseText
             let error = null
@@ -123,7 +139,7 @@ HttpProvider.prototype.send = function(payload, callback) {
         }
     }
 
-    request.ontimeout = function() {
+    request.ontimeout = function () {
         _this.connected = false
         callback(errors.ConnectionTimeout(this.timeout))
     }
@@ -136,11 +152,11 @@ HttpProvider.prototype.send = function(payload, callback) {
     }
 }
 
-HttpProvider.prototype.disconnect = function() {
+HttpProvider.prototype.disconnect = function () {
     // NO OP
 }
 
-HttpProvider.prototype.supportsSubscriptions = function() {
+HttpProvider.prototype.supportsSubscriptions = function () {
     return false
 }
 
